@@ -148,7 +148,7 @@ sub _init {
     $plugins ||= { };
 
     # update PLUGIN_BASE to an array ref if necessary
-    $pbase = [ ] unless defined $pbase;
+    $pbase //= [ ];
     $pbase = [ $pbase ] unless ref($pbase) eq 'ARRAY';
 
     # add default plugin base (Template::Plugin) if set

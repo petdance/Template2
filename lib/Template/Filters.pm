@@ -108,7 +108,7 @@ sub fetch {
 
     $self->debug("fetch($name, ",
                  defined $args ? ('[ ', join(', ', @$args), ' ]') : '<no args>', ', ',
-                 defined $context ? $context : '<no context>',
+                 $context // '<no context>',
                  ')') if $self->{ DEBUG };
 
     # allow $name to be specified as a reference to
@@ -424,12 +424,11 @@ sub html_entity_filter_factory {
 
 sub indent_filter_factory {
     my ($context, $pad) = @_;
-    $pad = 4 unless defined $pad;
+    $pad //= 4;
     $pad = ' ' x $pad if $pad =~ /^\d+$/;
 
     return sub {
-        my $text = shift;
-        $text = '' unless defined $text;
+        my $text = shift // '';
         $text =~ s/^/$pad/mg;
         return $text;
     }
@@ -444,11 +443,10 @@ sub indent_filter_factory {
 
 sub format_filter_factory {
     my ($context, $format) = @_;
-    $format = '%s' unless defined $format;
+    $format //= '%s';
 
     return sub {
-        my $text = shift;
-        $text = '' unless defined $text;
+        my $text = shift // '';
         return join("\n", map{ sprintf($format, $_) } split(/\n/, $text));
     }
 }
@@ -465,8 +463,7 @@ sub repeat_filter_factory {
     $iter = 1 unless defined $iter and length $iter;
 
     return sub {
-        my $text = shift;
-        $text = '' unless defined $text;
+        my $text = shift // '';
         return join('\n', $text) x $iter;
     }
 }
@@ -480,12 +477,11 @@ sub repeat_filter_factory {
 
 sub replace_filter_factory {
     my ($context, $search, $replace) = @_;
-    $search = '' unless defined $search;
-    $replace = '' unless defined $replace;
+    $search //= '';
+    $replace //= '';
 
     return sub {
-        my $text = shift;
-        $text = '' unless defined $text;
+        my $text = shift // '';
         $text =~ s/$search/$replace/g;
         return $text;
     }
@@ -502,8 +498,7 @@ sub remove_filter_factory {
     my ($context, $search) = @_;
 
     return sub {
-        my $text = shift;
-        $text = '' unless defined $text;
+        my $text = shift // '';
         $text =~ s/$search//g;
         return $text;
     }
@@ -518,8 +513,8 @@ sub remove_filter_factory {
 
 sub truncate_filter_factory {
     my ($context, $len, $char) = @_;
-    $len  = $TRUNCATE_LENGTH unless defined $len;
-    $char = $TRUNCATE_ADDON  unless defined $char;
+    $len  //= $TRUNCATE_LENGTH;
+    $char //= $TRUNCATE_ADDON;
 
     # Length of char is the minimum length
     my $lchar = length $char;
