@@ -488,7 +488,17 @@ sub replace_filter_factory {
     return sub {
         my $text = shift;
         $text = '' unless defined $text;
-        $text =~ s/$search/$replace/g;
+        my $prev_end = -1;
+        $text =~ s{$search}{
+            my $s = $-[0];
+            my $e = $+[0];
+            if ($s == $e && $s == $prev_end) {
+                '';
+            } else {
+                $prev_end = $e;
+                $replace;
+            }
+        }eg;
         return $text;
     }
 }

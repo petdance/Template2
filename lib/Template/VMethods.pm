@@ -230,7 +230,17 @@ sub text_replace {
             $chunk;
         };
         if ($global) {
-            $text =~ s{$pattern}{ &$expand($replace, [@-], [@+]) }eg;
+            my $prev_end = -1;
+            $text =~ s{$pattern}{
+                my $s = $-[0];
+                my $e = $+[0];
+                if ($s == $e && $s == $prev_end) {
+                    '';
+                } else {
+                    $prev_end = $e;
+                    &$expand($replace, [@-], [@+]);
+                }
+            }eg;
         }
         else {
             $text =~ s{$pattern}{ &$expand($replace, [@-], [@+]) }e;
@@ -238,7 +248,17 @@ sub text_replace {
     }
     else {
         if ($global) {
-            $text =~ s/$pattern/$replace/g;
+            my $prev_end = -1;
+            $text =~ s{$pattern}{
+                my $s = $-[0];
+                my $e = $+[0];
+                if ($s == $e && $s == $prev_end) {
+                    '';
+                } else {
+                    $prev_end = $e;
+                    $replace;
+                }
+            }eg;
         }
         else {
             $text =~ s/$pattern/$replace/;
