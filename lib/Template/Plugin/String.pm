@@ -345,7 +345,17 @@ sub replace {
     my ($self, $search, $replace) = @_;
     return $self unless defined $search;
     $replace = '' unless defined $replace;
-    $self->{ text } =~ s/$search/$replace/g;
+    my $prev_end = -1;
+    $self->{ text } =~ s{$search}{
+        my $s = $-[0];
+        my $e = $+[0];
+        if ($s == $e && $s == $prev_end) {
+            '';
+        } else {
+            $prev_end = $e;
+            $replace;
+        }
+    }eg;
     return $self;
 }
 
