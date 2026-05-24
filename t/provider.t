@@ -177,7 +177,7 @@ EOF
 
 #------------------------------------------------------------------------
 # now we'll fold those providers up into some Template objects that
-# we can pass to text_expect() to do some template driven testing
+# we can pass to test_expect() to do some template driven testing
 #------------------------------------------------------------------------
 
 my $ttinc = Template->new( LOAD_TEMPLATES => [ $provinc ] )
