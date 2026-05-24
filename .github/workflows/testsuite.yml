@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v6
       - run: perl -V
       - name: install dependencies
-        uses: perl-actions/install-with-cpm@v1.9
+        uses: perl-actions/install-with-cpm@v2
         with:
           cpanfile: "cpanfile"
       - name: Makefile.PL
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v6
       - run: perl -V
       - name: install dependencies
-        uses: perl-actions/install-with-cpm@v1.9
+        uses: perl-actions/install-with-cpm@v2
         with:
           sudo: false
           cpanfile: "cpanfile"
@@ -98,7 +98,7 @@ jobs:
       - uses: actions/checkout@v6
       - run: perl -V
       - name: install dependencies
-        uses: perl-actions/install-with-cpm@v1.9
+        uses: perl-actions/install-with-cpm@v2
         with:
           sudo: true
           cpanfile: "cpanfile"
