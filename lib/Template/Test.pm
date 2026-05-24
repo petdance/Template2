@@ -472,7 +472,7 @@ L<Test::More>, subtests, and other Test::Builder-based modules.
 
 =head1 PACKAGE SUBROUTINES
 
-=head2 text_expect()
+=head2 test_expect()
 
 The C<test_expect()> subroutine splits an input document into a number
 of separate tests, processes each one using the Template Toolkit and
